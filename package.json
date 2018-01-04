@@ -1,0 +1,23 @@
+{
+  "name": "create-scrc-component",
+  "version": "1.0.0",
+  "description": "A tool that can help you create a react component easily and fastly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/changhuali/create-scrc-component.git"
+  },
+  "keywords": [
+    "react",
+    "component"
+  ],
+  "author": "changhua.li <changhua.ligg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/changhuali/create-scrc-component/issues"
+  },
+  "homepage": "https://github.com/changhuali/create-scrc-component#readme"
+}
