@@ -21,8 +21,10 @@ const OPTIONS = '[options]';
 const ARGUMENTS = COMPONENT_NAME + ' ' + OPTIONS;
 const MIN_NPM_VERSION = '3.0.0';
 const ALL_DEPENDENCIES = ['react', 'react-dom'];
+const ALL_DEV_DEPENDENCIES = ['webpack'];
 
 let componentName;
+let removeComponentDir;
 
 program
   // .command(packageJson.name)
@@ -89,7 +91,6 @@ function createPackageJsonFile(root, compName) {
     "repository": {},
     "keywords": [
       "react",
-      "component"
     ],
     "license": "MIT",
   };
@@ -99,7 +100,7 @@ function createPackageJsonFile(root, compName) {
   );
 }
 
-function checkNpmValid(root) {
+function checkNpmValid() {
   let npmVersion = null;
   let npmVersionValid = false;
   try {
@@ -111,7 +112,7 @@ function checkNpmValid(root) {
       console.log(colors.error(
         `Error:there is no npm in your environment.`
       ));
-      fs.removeSync(root);
+      removeComponentDir();
       process.exit(1);
     }
   } catch (err) {
@@ -119,18 +120,19 @@ function checkNpmValid(root) {
   }
 }
 
-function installDependcies(root) {
-  console.log(colors.green('Installing dependencies. Wait a while.'));
-  const child = spawnSync('npm', ['install', '--save'].concat(ALL_DEPENDENCIES), {stdio: 'inherit'});
+function installPackages(packages, options) {
+  const packType = options === '--save' ? 'dependencies' : 'devDependencies';
+  console.log(colors.green(`××××××××××installing ${packType}. Wait a while.`));
+  const child = spawnSync('npm', ['install', options].concat(packages), {stdio: 'inherit'});
   if (child.status !== 0) {
     console.log(colors.red(
-      `Error:the command ${colors.cyan(`npm install ${ALL_DEPENDENCIES.join(' ')} --save`)} has failed.`
+      `Error:the command ${colors.cyan(`npm install ${packType}`)} has failed.`
     ));
-    fs.removeSync(root);
+    removeComponentDir();
     process.exit(1);
   } else {
     console.log(colors.green(
-      `Info:${ALL_DEPENDENCIES.join(' ')} have installed.`
+      `Info:${packType} installed succesfully.`
     ));
   }
 }
@@ -142,12 +144,16 @@ function componentInit(root, compName) {
 
 function createComponent(compName) {
   const root = path.resolve(compName);
+  removeComponentDir = () => {
+    fs.removeSync(root);
+  };
   checkCompName(compName);
   mkdirOfComp(root, compName);
   createPackageJsonFile(root, compName);
   process.chdir(root);
-  checkNpmValid(root);
-  installDependcies(root);
+  checkNpmValid();
+  installPackages(ALL_DEPENDENCIES, "--save");
+  installPackages(ALL_DEV_DEPENDENCIES, "--save-dev");
   componentInit(root, compName);
 }
 
