@@ -16,7 +16,7 @@ const spawnSync = require('child_process').spawnSync;
 
 const packageJson = require('../package.json');
 
-const COMPONENT_NAME = '<component name>';
+const COMPONENT_NAME = '<component-name>';
 const OPTIONS = '[options]';
 const ARGUMENTS = COMPONENT_NAME + ' ' + OPTIONS;
 const MIN_NPM_VERSION = '3.0.0';
