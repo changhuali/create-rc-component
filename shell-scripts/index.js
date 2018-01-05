@@ -20,7 +20,7 @@ if (majorSemver < leastVersion) {
       Please update your version of Node.`
     )
   );
-  process.exit();
+  process.exit(1);
 }
 
 require('./createScRcComponent');

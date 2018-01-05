@@ -14,7 +14,7 @@ const execSync = require('child_process').execSync;
 const semver = require('semver');
 const spawnSync = require('child_process').spawnSync;
 
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 const COMPONENT_NAME = '<component name>';
 const OPTIONS = '[options]';
@@ -136,7 +136,7 @@ function installDependcies(root) {
 }
 
 function componentInit(root, compName) {
-  const templatePath = path.join(__dirname, 'template');
+  const templatePath = path.join(__dirname, '../template');
   fs.copySync(templatePath, root);
 }
 
