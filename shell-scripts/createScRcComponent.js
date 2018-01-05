@@ -38,7 +38,7 @@ program
 
 if (typeof componentName === 'undefined') {
   console.log(colors.cyan('-----------------------------------------------------------'));
-  console.error('Please specify the component name:');
+  console.log('Please specify the component name:');
   console.log(`  ${colors.cyan(program.name())} ${colors.green(COMPONENT_NAME)}`);
   console.log();
   console.log('For example:');
@@ -52,7 +52,7 @@ if (typeof componentName === 'undefined') {
 function printCheckResult(results) {
   if (typeof results !== 'undefined') {
     results.forEach(error => {
-      console.error(colors.red(`      ${error}`));
+      console.log(colors.cyan(`      ${error}`));
     });
   }
 }
@@ -60,9 +60,8 @@ function printCheckResult(results) {
 function checkCompName(compName) {
   const checkResult = validateCompName(compName);
   if (!checkResult.validForNewPackages) {
-    console.error(
-      `Error:Could not create a component called ${colors.red(compName)}
-      because of ${colors.green('npm naming restrictions')}:`
+    console.log(
+      `${colors.bgRed('error')} could not create a component called ${colors.yellow(compName)} because of ${colors.yellow('npm naming restrictions')}:`
     );
     printCheckResult(checkResult.errors);
     printCheckResult(checkResult.warnings);
@@ -73,14 +72,11 @@ function checkCompName(compName) {
 function mkdirOfComp(root, compName) {
   const isExist = fs.pathExistsSync(root);
   if (isExist) {
-    console.error(
-      `${colors.red(`Error:the dir ${compName} has already exist,
-      try to using a new component name or remove the exist dir.`)}`
-    );
+    console.log(`${colors.bgRed('error')} the dir has already exist, try to using a new component name or remove the exist dir.`);
     process.exit(1);
   }
   fs.ensureDirSync(root);
-  console.log(`Create a new component in ${colors.green(root)}`);
+  console.log(`create a new component in ${colors.green(root)}`);
 }
 
 function createPackageJsonFile(root, compName) {
@@ -109,9 +105,7 @@ function checkNpmValid() {
       .trim();
     npmVersionValid = semver.gte(npmVersion, MIN_NPM_VERSION);
     if (!npmVersion) {
-      console.log(colors.error(
-        `Error:there is no npm in your environment.`
-      ));
+      console.log(`${colors.bgRed('error')} there is no npm in your environment.`);
       removeComponentDir();
       process.exit(1);
     }
@@ -122,18 +116,12 @@ function checkNpmValid() {
 
 function installPackages(packages, options) {
   const packType = options === '--save' ? 'dependencies' : 'devDependencies';
-  console.log(colors.green(`××××××××××installing ${packType}. Wait a while.`));
+  console.log(`${colors.bgCyan('info')} installing ${packType}. Wait a while.`);
   const child = spawnSync('npm', ['install', options].concat(packages), {stdio: 'inherit'});
   if (child.status !== 0) {
-    console.log(colors.red(
-      `Error:the command ${colors.cyan(`npm install ${packType}`)} has failed.`
-    ));
+    console.log(`error the command ${colors.cyan(`npm install ${packType}`)} has failed.`);
     removeComponentDir();
     process.exit(1);
-  } else {
-    console.log(colors.green(
-      `Info:${packType} installed succesfully.`
-    ));
   }
 }
 
@@ -141,9 +129,9 @@ function componentInit(root, compName) {
   const templatePath = path.join(__dirname, '../template');
   fs.copySync(templatePath, root);
   console.log();
-  console.log(`You have created a component ${colors.green(compName)}`);
+  console.log(`${colors.bgGreen('success')} you have created a component ${colors.green(compName)}`);
   console.log();
-  console.log(`You can run command ${colors.cyan(`cd ${compName}`)} and then run commands below:`);
+  console.log(`you can run command ${colors.cyan(`cd ${compName}`)} and then run commands below:`);
   console.log();
   console.log(colors.cyan(`   npm run dev   `) + '---start developing you component');
   console.log();
