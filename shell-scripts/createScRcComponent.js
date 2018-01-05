@@ -140,6 +140,17 @@ function installPackages(packages, options) {
 function componentInit(root, compName) {
   const templatePath = path.join(__dirname, '../template');
   fs.copySync(templatePath, root);
+  console.log();
+  console.log(`You have created a component ${colors.green(compName)}`);
+  console.log();
+  console.log(`You can run command ${colors.cyan(`cd ${compName}`)} and then run commands below:`);
+  console.log();
+  console.log(colors.cyan(`   npm run dev   `) + '---start developing you component');
+  console.log();
+  console.log(colors.cyan(`   npm run test    `) + '---test you component with jest');
+  console.log();
+  console.log(colors.cyan(`   npm run publish   `) + '---publish you component to npm');
+  console.log();
 }
 
 function createComponent(compName) {
