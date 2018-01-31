@@ -105,15 +105,15 @@ function createReadmeMdFile(root, compName) {
 }
 
 function createComponentTemplate(root, compName) {
-  const template = `
-  import React from 'react';
-  import './styles/index.less';
-  export default function CompName() {
-    return (
-      <div>test</div>
-    );
-  }
-  `
+  const template = `import React from 'react';
+import './styles/index.less';
+
+export default function CompName() {
+  return (
+    <div>test</div>
+  );
+}
+`
   fs.writeFileSync(
     path.join(root, './component/index.js'),
     template
