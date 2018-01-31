@@ -14,21 +14,22 @@ const execSync = require('child_process').execSync;
 const semver = require('semver');
 const spawnSync = require('child_process').spawnSync;
 
-const packageJson = require('../package.json');
+const toolPackageJson = require('../package.json');
+const compPackageJson = require('../template/package.json');
 
 const COMPONENT_NAME = '<component-name>';
 const OPTIONS = '[options]';
 const ARGUMENTS = COMPONENT_NAME + ' ' + OPTIONS;
 const MIN_NPM_VERSION = '3.0.0';
-const ALL_DEPENDENCIES = ['react', 'react-dom'];
-const ALL_DEV_DEPENDENCIES = ['webpack'];
+const ALL_DEPENDENCIES = Object.keys(compPackageJson.dependencies);
+const ALL_DEV_DEPENDENCIES = Object.keys(compPackageJson.devDependencies);
 
 let componentName;
 let removeComponentDir;
 
 program
-  // .command(packageJson.name)
-  .version(packageJson.version)
+  // .command(toolPackageJson.name)
+  .version(toolPackageJson.version)
   .arguments(ARGUMENTS)
   .usage(colors.green(ARGUMENTS))
   .action((name) => {
@@ -80,19 +81,42 @@ function mkdirOfComp(root, compName) {
 }
 
 function createPackageJsonFile(root, compName) {
-  const packageJson = {
-    "name": compName,
-    "version": "1.0.0",
-    "description": "add some your description about this component",
-    "repository": {},
-    "keywords": [
-      "react",
-    ],
-    "license": "MIT",
-  };
+  compPackageJson.name = compName;
   fs.writeFileSync(
     path.join(root, 'package.json'),
-    JSON.stringify(packageJson, null, 2)
+    JSON.stringify(compPackageJson, null, 2)
+  );
+}
+
+function createReadmeMdFile(root, compName) {
+  const mdContent = `
+  # ${compName.replace(/^(.)/, (n) => n.toUpperCase())}
+  
+  ## 代码演示
+  
+  ## API
+  |属性|说明|类型|默认值|
+  |---|---|---|---|
+  `;
+  fs.writeFileSync(
+    path.join(root, 'README.md'),
+    mdContent
+  );
+}
+
+function createComponentTemplate(root, compName) {
+  const template = `
+  import React from 'react';
+  import './styles/index.less';
+  export default function CompName() {
+    return (
+      <div>test</div>
+    );
+  }
+  `
+  fs.writeFileSync(
+    path.join(root, './component/index.js'),
+    template
   );
 }
 
@@ -114,13 +138,11 @@ function checkNpmValid() {
   }
 }
 
-function installPackages(packages, options) {
-  const packType = options === '--save' ? 'dependencies' : 'devDependencies';
-  console.log(`${colors.bgCyan('info')} installing ${packType}. Wait a while.`);
-  const child = spawnSync('npm', ['install', options].concat(packages), {stdio: 'inherit'});
+function installPackages() {
+  console.log(`${colors.bgCyan('info')} installing dependencies and devDependencies. Please wait a while.`);
+  const child = spawnSync('npm', ['install'], {stdio: 'inherit'});
   if (child.status !== 0) {
-    console.log(`error the command ${colors.cyan(`npm install ${packType}`)} has failed.`);
-    removeComponentDir();
+    console.log(`error the command ${colors.cyan('npm install has failed.')}`);
     process.exit(1);
   }
 }
@@ -128,6 +150,9 @@ function installPackages(packages, options) {
 function componentInit(root, compName) {
   const templatePath = path.join(__dirname, '../template');
   fs.copySync(templatePath, root);
+}
+
+function outputSuccessInfo(compName) {
   console.log();
   console.log(`${colors.bgGreen('success')} you have created a component ${colors.green(compName)}`);
   console.log();
@@ -148,12 +173,14 @@ function createComponent(compName) {
   };
   checkCompName(compName);
   mkdirOfComp(root, compName);
+  componentInit(root, compName);
   createPackageJsonFile(root, compName);
+  createReadmeMdFile(root, compName);
+  createComponentTemplate(root, compName);
   process.chdir(root);
   checkNpmValid();
-  installPackages(ALL_DEPENDENCIES, "--save");
-  installPackages(ALL_DEV_DEPENDENCIES, "--save-dev");
-  componentInit(root, compName);
+  installPackages();
+  outputSuccessInfo(compName);
 }
 
 createComponent(componentName);

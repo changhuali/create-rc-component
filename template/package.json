@@ -1,0 +1,56 @@
+{
+  "name": "name",
+  "version": "1.0.0",
+  "description": "add some your description about this component",
+  "repository": {},
+  "keywords": [
+    "react"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "^3.1.3",
+    "mark-twain": "^2.0.2",
+    "jsonml-to-react-element": "^1.0.0"
+  },
+  "scripts": {
+    "predev": "node ./build_tools/genTemplate.js",
+    "dev": "node ./build_tools/webpack-dev-server.js",
+    "prepublish": "./node_modules/.bin/gulp --gulpfile ./build_tools/gulpfile.js",
+    "publish": "npm publish"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.2.5",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-less": "^3.4.0",
+    "html-webpack-plugin": "^2.30.1",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "open": "0.0.5",
+    "postcss-loader": "^2.0.10",
+    "style-loader": "^0.19.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.4",
+    "webpack-dev-server": "^2.11.1",
+    "webpack-hot-middleware": "^2.21.0"
+  }
+}
