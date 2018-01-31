@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import toReactElement from 'jsonml-to-react-element';
 import Demo from '../demo';
-import jsonML from './md';
+import jsonML from './md.json';
 import './md.less';
 
 const mountNode = document.getElementById('react-root');
@@ -25,7 +25,6 @@ const addDemo = [
     },
   ],
 ];
-console.log(mdJson);
 ReactDom.render(
   <AppContainer>
     {toReactElement(mdJson, addDemo)}
