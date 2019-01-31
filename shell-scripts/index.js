@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
-*Check user's version of node, if it smaller than the leastVersion, exit and promt the error.
+*Check user's version of node, if it's smaller than the leastVersion, exit and promt the error.
 *This file must work on node 0.10+.
 */
 
